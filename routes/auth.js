@@ -11,6 +11,7 @@ const {
   loginUser,
   renewToken,
 } = require("../controllers/auth/auth");
+const { fieldValidator } = require("../middlewares/validate-fields");
 
 router.get("/", (req, res) => {
   res.json({
@@ -28,6 +29,7 @@ router.post(
       "password",
       "El password debe de ser de minimo 6 caracteres"
     ).isLength({ min: 6 }),
+    fieldValidator,
   ],
   registerUser
 );
@@ -40,6 +42,7 @@ router.post(
       "password",
       "El password debe de ser de minimo 6 caracteres"
     ).isLength({ min: 6 }),
+    fieldValidator,
   ],
   loginUser
 );

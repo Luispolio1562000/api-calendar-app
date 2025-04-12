@@ -4,15 +4,6 @@ const registerUser = (req, res = response) => {
   console.log(req.body);
   const { name, email, password } = req.body;
 
-  //? Manejo de errores
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      ok: false,
-      errors: errors.mapped(),
-    });
-  }
-
   if (name.trim().length < 5) {
     return res.status(400).json({
       ok: false,
@@ -31,14 +22,6 @@ const registerUser = (req, res = response) => {
 
 const loginUser = (req, res = response) => {
   const { email, password } = req.body;
-
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      ok: false,
-      errors: errors.mapped(),
-    });
-  }
 
   res.json({
     ok: true,

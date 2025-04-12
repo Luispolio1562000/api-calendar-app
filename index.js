@@ -1,10 +1,13 @@
 const express = require("express");
 const EnvConfig = require("./enviromentVariables");
+const { dbConnection } = require("./database/config");
 
 const config = EnvConfig();
 
 //* Crear servidor de express.
 const app = express();
+//? BD connections
+dbConnection();
 
 //? Directorio publico.
 //? Use es un middleware que se ejecuta antes de las rutas.
