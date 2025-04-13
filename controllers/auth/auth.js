@@ -1,23 +1,40 @@
 const { response } = require("express");
-const { validationResult } = require("express-validator");
-const registerUser = (req, res = response) => {
-  console.log(req.body);
-  const { name, email, password } = req.body;
+const bycrypt = require("bcryptjs");
+const User = require("../../models/User");
 
-  if (name.trim().length < 5) {
-    return res.status(400).json({
+const registerUser = async (req, res = response) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = new User(req.body);
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({
+        ok: false,
+        msg: "Email already exists",
+      });
+    }
+
+    // Encrypt the password
+    const salt = bycrypt.genSaltSync();
+    user.password = bycrypt.hashSync(password, salt);
+
+    // Save the new user to the database
+    await user.save();
+
+    res.status(201).json({
+      ok: true,
+      msg: "Usuario creado correctamente",
+      uid: user.id,
+      name: user.name,
+    });
+  } catch (error) {
+    console.error("Error saving user:", error);
+    return res.status(500).json({
       ok: false,
-      msg: "El nombre debe de ser de minimo 5 letras",
+      msg: "Por favor hable con el administrador",
     });
   }
-
-  res.status(201).json({
-    ok: true,
-    msg: "post register",
-    name,
-    email,
-    password,
-  });
 };
 
 const loginUser = (req, res = response) => {
