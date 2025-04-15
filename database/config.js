@@ -17,7 +17,6 @@ const clientOptions = {
     autoIndex: true,
   },
 };
-console.log(urlDb);
 
 const dbConnection = async () => {
   try {

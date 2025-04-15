@@ -1,6 +1,7 @@
 const express = require("express");
 const EnvConfig = require("./enviromentVariables");
 const { dbConnection } = require("./database/config");
+const cors = require("cors");
 
 const config = EnvConfig();
 
@@ -8,6 +9,7 @@ const config = EnvConfig();
 const app = express();
 //? BD connections
 dbConnection();
+app.use(cors());
 
 //? Directorio publico.
 //? Use es un middleware que se ejecuta antes de las rutas.

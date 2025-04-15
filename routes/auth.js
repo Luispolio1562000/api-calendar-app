@@ -12,7 +12,7 @@ const {
   renewToken,
 } = require("../controllers/auth/auth");
 const { fieldValidator } = require("../middlewares/validate-fields");
-
+const { validateJWT } = require("../middlewares/validateJWT");
 router.get("/", (req, res) => {
   res.json({
     ok: true,
@@ -48,6 +48,6 @@ router.post(
 );
 
 //? Generara un JWT.
-router.get("/renew", renewToken);
+router.get("/renew", validateJWT, renewToken);
 
 module.exports = router;

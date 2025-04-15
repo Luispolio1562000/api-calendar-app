@@ -5,6 +5,7 @@ const variablesEnv = ({
   DB_NAME: dbName = calendar_app,
   MONGO_USER: mongoUser,
   MONGO_PASSWORD: mongoPassword,
+  SECRET_KEY: secretKey,
 } = process.env);
 
 const EnvConfig = () => ({
@@ -13,6 +14,7 @@ const EnvConfig = () => ({
   dbName,
   mongoUser,
   mongoPassword,
+  secretKey,
 });
 
 module.exports = EnvConfig;

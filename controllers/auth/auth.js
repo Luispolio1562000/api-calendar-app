@@ -1,6 +1,7 @@
-const { response } = require("express");
+const { response, request } = require("express");
 const bycrypt = require("bcryptjs");
 const User = require("../../models/User");
+const { generateJWT } = require("../../helpers/jwt");
 
 const registerUser = async (req, res = response) => {
   const { email, password } = req.body;
@@ -22,11 +23,13 @@ const registerUser = async (req, res = response) => {
     // Save the new user to the database
     await user.save();
 
-    res.status(201).json({
+    const token = await generateJWT(user.id, user.name);
+
+    return res.status(200).json({
       ok: true,
-      msg: "Usuario creado correctamente",
+      msg: "Login correcto",
+      token,
       uid: user.id,
-      name: user.name,
     });
   } catch (error) {
     console.error("Error saving user:", error);
@@ -37,22 +40,66 @@ const registerUser = async (req, res = response) => {
   }
 };
 
-const loginUser = (req, res = response) => {
+const loginUser = async (req, res = response) => {
   const { email, password } = req.body;
 
-  res.json({
-    ok: true,
-    msg: "post login",
-    email,
-    password,
-  });
+  try {
+    const existingUser = await User.findOne({ email });
+    if (!existingUser) {
+      return res.status(404).json({
+        ok: false,
+        msg: "El usuario email no se encuentra registrado.",
+      });
+    }
+
+    //? Match passwords
+
+    const validPassword = bycrypt.compareSync(password, existingUser.password);
+
+    if (!validPassword) {
+      return res.status(400).json({
+        ok: false,
+        msg: "Password incorrecto",
+      });
+    }
+    //* Generate JWT
+    const token = await generateJWT(existingUser.id, existingUser.name);
+
+    return res.status(200).json({
+      ok: true,
+      msg: "Login correcto",
+      token,
+      uid: existingUser.id,
+    });
+  } catch (error) {
+    console.error("Error logging in user:", error);
+    return res.status(500).json({
+      ok: false,
+      msg: "Por favor hable con el administrador",
+    });
+  }
 };
 
-const renewToken = (req, res = response) => {
-  res.json({
-    ok: true,
-    msg: "get renew",
-  });
+const renewToken = async (req = request, res = response) => {
+  // console.log(req.body);
+  const { uid, name } = req.body;
+
+  try {
+    //* Generate JWT
+    const token = await generateJWT(uid, name);
+
+    return res.status(200).json({
+      ok: true,
+      msg: "Login correcto",
+      token,
+    });
+  } catch (error) {
+    console.error("Error logging in user:", error);
+    return res.status(500).json({
+      ok: false,
+      msg: "Por favor hable con el administrador",
+    });
+  }
 };
 
 module.exports = { registerUser, loginUser, renewToken };
