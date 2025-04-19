@@ -2,9 +2,11 @@ const express = require("express");
 const EnvConfig = require("./enviromentVariables");
 const { dbConnection } = require("./database/config");
 const cors = require("cors");
-
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+const swaggerOptions = require("./swagger");
 const config = EnvConfig();
-
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
 //* Crear servidor de express.
 const app = express();
 //? BD connections
@@ -14,7 +16,7 @@ app.use(cors());
 //? Directorio publico.
 //? Use es un middleware que se ejecuta antes de las rutas.
 app.use(express.static("public"));
-
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 //? Lectura y parseo del body.
 app.use(express.json());
 //* Rutas
