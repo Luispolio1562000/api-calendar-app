@@ -7,6 +7,17 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerOptions = require("./swagger");
 const config = EnvConfig();
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
+
+(async () => {
+  const { default: open } = await import("open");
+
+  // Usar open dentro de esta función asíncrona
+  app.listen(config.port, () => {
+    // Abrir el navegador automáticamente
+    open(`http://localhost:${config.port}/api-docs`);
+  });
+})();
+
 //* Crear servidor de express.
 const app = express();
 //? BD connections
