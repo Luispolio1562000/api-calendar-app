@@ -1,1 +1,10 @@
-{ "version": 2, "rewrites": [{ "source": "/(.*)", "destination": "/api" }] }
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "https://calendar-app-backend.vercel.app/api/$1"
+    }
+  ],
+  "buildCommand": ""
+}
