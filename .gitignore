@@ -70,3 +70,4 @@ data/db/
 
 # Archivos de debug
 .debug
+.vercel
