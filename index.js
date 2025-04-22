@@ -8,15 +8,15 @@ const swaggerOptions = require("./swagger");
 const config = EnvConfig();
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
-(async () => {
-  const { default: open } = await import("open");
+// (async () => {
+//   const open = await require("open");
 
-  // Usar open dentro de esta función asíncrona
-  app.listen(config.port, () => {
-    // Abrir el navegador automáticamente
-    open(`http://localhost:${config.port}/api-docs`);
-  });
-})();
+//   // Usar open dentro de esta función asíncrona
+//   app.listen(config.port, () => {
+//     // Abrir el navegador automáticamente
+//     open(`http://localhost:${config.port}/api-docs`);
+//   });
+// })();
 
 //* Crear servidor de express.
 const app = express();
