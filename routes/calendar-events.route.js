@@ -84,7 +84,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/events:
+ * /api/events/all-events:
  *   get:
  *     summary: Obtener todos los eventos
  *     tags: [Events]
@@ -108,7 +108,11 @@ module.exports = router;
  *         description: No autorizado, token no válido
  *       500:
  *         description: Error del servidor
- *
+ */
+
+/**
+ * @swagger
+ * /api/events/new-event:
  *   post:
  *     summary: Crear un nuevo evento
  *     tags: [Events]

@@ -1,23 +1,36 @@
 const swaggerOptions = {
   definition: {
-    openapi: "3.0.0",
+    openapi: "3.0.3",
     info: {
-      title: "API Documentation",
+      title: "Calendar API Documentation",
       version: "1.0.0",
-      description: "API documentation for the project",
+      description: "API documentation for the Calendar App",
       contact: {
         name: "Luis Gustavo",
-        url: "ghub.com/luisgustavo",
+        url: "https://github.com/Luispolio1562000",
       },
-      servers: [
-        {
-          url: "http://localhost:3000/api/v1",
-          description: "Development server",
-        },
-      ],
     },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
+    servers: [
+      {
+        url: "http://localhost:3000",
+        description: "Development server",
+      },
+    ],
   },
-  basePath: "/api-docs",
   apis: ["./routes/*.js", "./controllers/*.js"],
 };
 

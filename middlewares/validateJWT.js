@@ -6,9 +6,12 @@ const config = EnvConfig();
 const secretKey = config.secretKey;
 
 const validateJWT = (req = request, res = response, next) => {
-  // console.log(req.headers);
-  const token = req.header("x-token");
-  //  console.log(token);
+  console.log("Validating JWT", req.headers);
+
+  // Get token from x-token header or Authorization header
+  const token =
+    req.header("x-token") ||
+    req.header("Authorization")?.replace("Bearer ", "");
 
   if (!token) {
     return res.status(401).json({
@@ -19,7 +22,6 @@ const validateJWT = (req = request, res = response, next) => {
 
   try {
     const payload = jwt.verify(token, secretKey);
-    //console.log(payload);
     req.body = {
       ...req.body,
       uid: payload.uid,
