@@ -23,12 +23,13 @@ const registerUser = async (req, res = response) => {
     // Save the new user to the database
     await user.save();
 
-    const token = await generateJWT(user.id, user.name);
+    const token = await generateJWT(user.id, user.name, user.email);
 
     return res.status(200).json({
       ok: true,
       msg: "Login correcto",
       token,
+      name: user.name,
       uid: user.id,
     });
   } catch (error) {
@@ -62,14 +63,21 @@ const loginUser = async (req, res = response) => {
         msg: "Password incorrecto",
       });
     }
+
     //* Generate JWT
-    const token = await generateJWT(existingUser.id, existingUser.name);
+    const token = await generateJWT(
+      existingUser.id,
+      existingUser.name,
+      existingUser.email
+    );
 
     return res.status(200).json({
       ok: true,
       msg: "Login correcto",
       token,
       uid: existingUser.id,
+      name: existingUser.name,
+      email: existingUser.email,
     });
   } catch (error) {
     console.error("Error logging in user:", error);
@@ -81,17 +89,20 @@ const loginUser = async (req, res = response) => {
 };
 
 const renewToken = async (req = request, res = response) => {
-  // console.log(req.body);
-  const { uid, name } = req.body;
+  console.log(req.body);
+  const { uid, name, email } = req.body;
 
   try {
     //* Generate JWT
-    const token = await generateJWT(uid, name);
+    const token = await generateJWT(uid, name, email);
 
     return res.status(200).json({
       ok: true,
       msg: "Login correcto",
+      email,
+      name,
       token,
+      uid,
     });
   } catch (error) {
     console.error("Error logging in user:", error);

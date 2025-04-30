@@ -26,6 +26,7 @@ const validateJWT = (req = request, res = response, next) => {
       ...req.body,
       uid: payload.uid,
       name: payload.name,
+      email: payload.email,
     };
     req.uid = payload.uid;
     req.name = payload.name;

@@ -7,6 +7,7 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerOptions = require("./swagger");
 const config = EnvConfig();
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
+const path = require("path");
 
 // (async () => {
 //   const open = await require("open");
@@ -33,6 +34,9 @@ app.use(express.json());
 //* Rutas
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/events", require("./routes/calendar-events.route"));
+app.use("*", (req, res) => {
+  res.sendFile(__dirname + "/public/index.html");
+});
 
 //*Escuchar peticiones HTTP.
 app.listen(config.port, () => {
