@@ -7,7 +7,16 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerOptions = require("./swagger");
 const config = EnvConfig();
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
-const path = require("path");
+
+// (async () => {
+//   const open = await require("open");
+
+//   // Usar open dentro de esta función asíncrona
+//   app.listen(config.port, () => {
+//     // Abrir el navegador automáticamente
+//     open(`http://localhost:${config.port}/api-docs`);
+//   });
+// })();
 
 //* Crear servidor de express.
 const app = express();
@@ -24,11 +33,6 @@ app.use(express.json());
 //* Rutas
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/events", require("./routes/calendar-events.route"));
-
-// Catch-all route for SPA - use a proper path string instead of "*"
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
 
 //*Escuchar peticiones HTTP.
 app.listen(config.port, () => {
